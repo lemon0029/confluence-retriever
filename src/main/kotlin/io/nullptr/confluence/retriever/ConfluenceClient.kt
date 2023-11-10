@@ -7,6 +7,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.nullptr.confluence.retriever.dto.ServerInformation
 import io.nullptr.confluence.retriever.ops.ConfluencePageOperations
 import io.nullptr.confluence.retriever.ops.ConfluenceSpaceOperations
 import io.nullptr.confluence.retriever.rpc.ErrorRpcResponse
@@ -39,6 +40,11 @@ class ConfluenceClient(val baseUrl: String, val session: String? = null) {
 
     val spaceOps = ConfluenceSpaceOperations(this)
     val pageOps = ConfluencePageOperations(this)
+
+    /**
+     * retrieve some basic information about the server being connected to.
+     */
+    fun serverInformation() = httpCall<ServerInformation>("getServerInfo")?.result
 
     inline fun <reified T> httpCall(method: String, vararg params: Any?): RpcResponse<T>? =
         runBlocking { httpCallAsync(method, *params) }

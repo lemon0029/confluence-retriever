@@ -14,7 +14,7 @@ class ConfluencePageOperations(private val client: ConfluenceClient) {
     /**
      * returns all the summaries in the space.
      */
-    fun getPages(spaceKey: String, token: String? = null): List<PageSummary> {
+    fun findAllPagesBySpaceKey(spaceKey: String, token: String? = null): List<PageSummary> {
         val response = client.httpCall<List<PageSummary>>(Methods.GET_PAGES, token, spaceKey)
         return response?.result ?: emptyList()
     }
@@ -22,8 +22,13 @@ class ConfluencePageOperations(private val client: ConfluenceClient) {
     /**
      * returns a single Page.
      */
-    fun getPage(pageId: Long, token: String? = null): Page? {
+    fun findPageById(pageId: Long, token: String? = null): Page? {
         val response = client.httpCall<Page>(Methods.GET_PAGE_BY_ID, token, pageId)
+        return response?.result
+    }
+
+    fun findPageBySpaceKeyAndTitle(spaceKey: String, title: String, token: String? = null): Page? {
+        val response = client.httpCall<Page>(Methods.GET_PAGE_BY_ID, token, spaceKey, title)
         return response?.result
     }
 }
