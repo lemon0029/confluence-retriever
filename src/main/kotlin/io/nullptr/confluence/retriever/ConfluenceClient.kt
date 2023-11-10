@@ -42,7 +42,7 @@ class ConfluenceClient(val baseUrl: String, val session: String? = null) {
         runBlocking { httpCallAsync(method, *params) }
 
     suspend inline fun <reified T> httpCallAsync(method: String, vararg params: Any?): RpcResponse<T>? {
-        val rpcRequest = buildJsonRemoteProcedureCallRequest(method, params.filterNotNull())
+        val rpcRequest = buildJsonRemoteProcedureCallRequest(method, *params)
 
         val url = "${baseUrl}/rpc/json-rpc/confluenceservice-v2"
         val httpResponse = httpClient.post(url) {

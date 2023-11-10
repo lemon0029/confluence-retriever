@@ -8,7 +8,7 @@ data class RpcRequest(
     @SerialName("method")
     val method: String,
 
-    @SerialName("param")
+    @SerialName("params")
     val params: List<String>,
 
     @SerialName("id")
@@ -18,8 +18,8 @@ data class RpcRequest(
     val version: String = "2.0"
 )
 
-fun buildJsonRemoteProcedureCallRequest(method: String, vararg params: Any): RpcRequest {
+fun buildJsonRemoteProcedureCallRequest(method: String, vararg params: Any?): RpcRequest {
     val requestIdentity = RpcRequestIdentityGenerator.generate()
-    return RpcRequest(method, params.map { it.toString() }, requestIdentity)
+    return RpcRequest(method, params.filterNotNull().map { it.toString() }, requestIdentity)
 }
 
