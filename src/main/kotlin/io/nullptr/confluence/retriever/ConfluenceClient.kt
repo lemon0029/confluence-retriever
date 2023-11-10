@@ -7,6 +7,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.nullptr.confluence.retriever.ops.ConfluencePageOperations
 import io.nullptr.confluence.retriever.ops.ConfluenceSpaceOperations
 import io.nullptr.confluence.retriever.rpc.ErrorRpcResponse
 import io.nullptr.confluence.retriever.rpc.RpcResponse
@@ -37,6 +38,7 @@ class ConfluenceClient(val baseUrl: String, val session: String? = null) {
     }
 
     val spaceOps = ConfluenceSpaceOperations(this)
+    val pageOps = ConfluencePageOperations(this)
 
     inline fun <reified T> httpCall(method: String, vararg params: Any?): RpcResponse<T>? =
         runBlocking { httpCallAsync(method, *params) }
